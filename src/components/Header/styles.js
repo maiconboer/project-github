@@ -66,7 +66,7 @@ export const Wrapper = styled.section`
         a {
           padding: 12px;
           font-size: 14px;
-          width: 130px;
+          width: 150px;
           margin: 10px 10px 0 0;
           align-self: flex-end;
           background-color: var(--color2);

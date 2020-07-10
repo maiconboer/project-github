@@ -18,7 +18,7 @@ const MyRepositories = () => {
   //   async function loadRepositories() {
   //     const { data } = await api.get(`users/${user}/repos`)
 
-  // `users/${user}/repos?page=2&per_page=30`
+  // // `users/${user}/repos?page=2&per_page=30`
 
   //     setMyRepositories(data)
   //   }
@@ -34,8 +34,8 @@ const MyRepositories = () => {
       <Header />
    
       <h2 className='title'>My repositories</h2>
-
-      {/* {myRepositories.map(repository => (
+{/* 
+      {myRepositories.map(repository => (
         <div key={repository.id} className='box-repositories'>
           <p><span>ID:</span> {repository.id}</p>
           <p><span>Name:</span> {repository.name}</p>
@@ -45,7 +45,7 @@ const MyRepositories = () => {
       ))} */}
 
 
-        <div className='box-repositories'>
+        {/* <div className='box-repositories'>
           <p><span>ID:</span> 214568764</p>
           <p><span>Name:</span> Lorem ipsum dolor sit amet consectetur adipisicing elit</p>
           <p><span>Description:</span> Illum voluptate. Placeat necessitatibus dolores voluptates quia? Quo, maiores iure.</p>
@@ -100,9 +100,9 @@ const MyRepositories = () => {
           <p><span>Description:</span> Illum voluptate. Placeat necessitatibus dolores voluptates quia? Quo, maiores iure.</p>
           <p><span>URL:</span> <a href='https://www.google.com.br' target='_blank'>https://www.google.com.br</a> </p>
         </div>
-     
+      */}
 
-      {/* {console.log(myRepositories)} */}
+      {/* {console.log(state.user.id)} */}
     </Wrapper>
   )
 }
