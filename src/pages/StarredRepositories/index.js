@@ -62,20 +62,6 @@ const StarredRepositories = () => {
       }
 
       setRepositoryWithTags([...repositoryWithTags, newTags])
-      
-      let boxTags = document.querySelectorAll(`[data-test]`)
-      boxTags = Array.from(boxTags)
-
-      const boxFiltered = boxTags.filter(box => box.dataset.test == repo_id)
-      
-      let span = document.createElement('span')
-      span.innerHTML = tags;
-      span.onclick = () => handleOpenModal()
-      span.dataset.id = id;
-      span.dataset.user_id = user_id;
-      span.dataset.repo_id = repo_id;
-      span.dataset.tags = tags;
-      boxFiltered[0].appendChild(span)
     }
   }
 
@@ -180,34 +166,15 @@ const StarredRepositories = () => {
                     data-tags={item[1]}
                     onClick={handleOpenModal}
                     >
-            {/* {console.log(item)} */}
-
                       {item[1]}
                     </span> 
                  : ' '
               ))}
 
-
             </div>
           </div>
         </div>
       ))}
- 
-        {/* ABAIXO DADOS ESTÁTICOS */}
-        {/* <div className='box-repositories'>
-          <p><span>ID:</span> 1111111111</p>
-          <p><span>Name:</span> Lorem ipsum dolor sit amet consectetur adipisicing elit</p>
-          <p><span>Description:</span> Illum voluptate. Placeat necessitatibus dolores voluptates quia? Quo, maiores iure.</p>
-          <p><span>URL:</span> <a href='https://www.google.com.br' target='_blank'>https://www.google.com.br</a> </p>
-
-          <div className='box-btn-tags'>
-            <button onClick={handleAddTag}>add tag</button>
-            <div data-test={1111111111} className='box-tags'>
-            
-            </div>
-          </div>
-        </div> */}
-
     </Wrapper>
   )
 }
