@@ -12,7 +12,22 @@ const StarredRepositories = () => {
 
   const {state, dispatch} = useContext(AuthContext);
   const [starredRepositories, setStarredRepositories] = useState([])
-  
+  const [repositoryWithTags, setRepositoryWithTags] = useState([])
+
+  let currentID = ''
+
+  useEffect(() => {
+    async function getInformationDB() {
+      const { data } = await apiDB.get(`/starred-repositories/${state.user.id}`)
+      
+      let result = data.map(item => [item.repo_id, item.tags, item.id])
+      setRepositoryWithTags(result)
+    }
+
+    getInformationDB()
+
+  }, [state.user.id, repositoryWithTags])
+
   useEffect(() => {
     const user = state.user.login;
 
@@ -37,36 +52,55 @@ const StarredRepositories = () => {
         tags
       }
       
-      // const response = await apiDB.post('/starred-repositories', data)
+      const response = await apiDB.post('/starred-repositories', data)
+      let { id, repo_id: repo, tags: tagRepo } = response.data
+      
+      const newTags = {
+        id,
+        repo,
+        tagRepo
+      }
 
+      setRepositoryWithTags([...repositoryWithTags, newTags])
+      
       let boxTags = document.querySelectorAll(`[data-test]`)
-
       boxTags = Array.from(boxTags)
 
       const boxFiltered = boxTags.filter(box => box.dataset.test == repo_id)
-
+      
       let span = document.createElement('span')
-
-      // span.innerHTML = tags
       span.innerHTML = tags;
+      span.onclick = () => handleOpenModal()
+      span.dataset.id = id;
       span.dataset.user_id = user_id;
       span.dataset.repo_id = repo_id;
       span.dataset.tags = tags;
       boxFiltered[0].appendChild(span)
-
-      // console.log(response)
-
-    //   span.innerHTML = 'VSCODE';
-    //   span.dataset.user_id = 123456;
-    //   span.dataset.repo_id = 532154;
-    //   span.dataset.tags = 'VSCODE';
-      span.onclick = () => handleOpenModal(event)
-      // boxTags.appendChild(span)
     }
   }
 
   async function handleEditTag() {
+    let tags = document.querySelector('.modal-edit-delete input').value
     
+    let data = {
+      id: currentID,
+      tags
+    }
+    
+    const response = await apiDB.put(`/starred-repositories`, data )
+    let { id, repo_id: repo, tags: tagRepo } = response.data
+
+    const newTags = {
+      id,
+      repo,
+      tagRepo
+    }
+
+    if(response.status === 200) {
+      handleCloseModal()
+    }
+
+    setRepositoryWithTags([...repositoryWithTags, newTags])
   }
 
   async function handleRemoveTag() {
@@ -75,7 +109,7 @@ const StarredRepositories = () => {
 
   function handleOpenModal(event) {
 
-    console.log(event);
+    currentID = event.target.dataset.id
 
     let wrapper = document.querySelector('.wrapper')
     let divModal = document.createElement('div');
@@ -89,7 +123,7 @@ const StarredRepositories = () => {
     input.placeholder = 'Tag name';
 
     btnEdit.innerHTML = 'Edit';
-    btnDelete.onclick = () => handleEditTag();
+    btnEdit.onclick = () => handleEditTag();
 
     btnDelete.innerHTML = 'Delete';
     btnDelete.onclick = () => handleRemoveTag();
@@ -124,100 +158,56 @@ const StarredRepositories = () => {
         />
       </div>
       
-
-      {starredRepositories.map(repository => (
+      {starredRepositories.map(repository => (    
         <div key={repository.id} className='box-repositories' id={repository.id}>
           <p><span>ID:</span> {repository.id}</p>
           <p><span>Name:</span> {repository.name}</p>
           <p><span>Description:</span> {repository.description}</p>
-          <p><span>URL:</span> <a href={repository.url} target='_blank'>{repository.url}</a> </p>
+          <p><span>URL:</span> <a href={repository.html_url} target='_blank'>{repository.html_url}</a> </p>
 
           <div className='box-btn-tags'>
             <button onClick={handleAddTag}>add tag</button>
             <div data-test={repository.id} className='box-tags'>
-            
+
+              
+              {repositoryWithTags.map(item => (
+                 item[0] == repository.id     
+                 ? <span 
+                    key={item[1]} 
+                    data-id={item[2]}
+                    data-user_id={state.user.id}
+                    data-repo_id={repository.id}
+                    data-tags={item[1]}
+                    onClick={handleOpenModal}
+                    >
+            {/* {console.log(item)} */}
+
+                      {item[1]}
+                    </span> 
+                 : ' '
+              ))}
+
+
             </div>
           </div>
         </div>
       ))}
-
  
         {/* ABAIXO DADOS ESTÁTICOS */}
-
-
         {/* <div className='box-repositories'>
-          <p><span>ID:</span> 214568764</p>
+          <p><span>ID:</span> 1111111111</p>
           <p><span>Name:</span> Lorem ipsum dolor sit amet consectetur adipisicing elit</p>
           <p><span>Description:</span> Illum voluptate. Placeat necessitatibus dolores voluptates quia? Quo, maiores iure.</p>
           <p><span>URL:</span> <a href='https://www.google.com.br' target='_blank'>https://www.google.com.br</a> </p>
 
           <div className='box-btn-tags'>
             <button onClick={handleAddTag}>add tag</button>
-            <div className='box-tags'>
+            <div data-test={1111111111} className='box-tags'>
             
             </div>
           </div>
-        </div>
+        </div> */}
 
-        <div className='box-repositories'>
-          <p><span>ID:</span> 875454564654</p>
-          <p><span>Name:</span> Lorem ipsum dolor sit amet consectetur adipisicing elit</p>
-          <p><span>Description:</span> Illum voluptate. Placeat necessitatibus dolores voluptates quia? Quo, maiores iure.</p>
-          <p><span>URL:</span> <a href='https://www.google.com.br' target='_blank'>https://www.google.com.br</a> </p>
-
-          <div className='box-btn-tags'>
-            <button onClick={handleAddTag}>add tag</button>
-            <div className='box-tags'>
-            
-            </div>
-          </div>
-        </div>
-
-        <div className='box-repositories'>
-          <p><span>ID:</span> 214568764</p>
-          <p><span>Name:</span> Lorem ipsum dolor sit amet consectetur adipisicing elit</p>
-          <p><span>Description:</span> Illum voluptate. Placeat necessitatibus dolores voluptates quia? Quo, maiores iure.</p>
-          <p><span>URL:</span> <a href='https://www.google.com.br' target='_blank'>https://www.google.com.br</a> </p>
-
-          <div className='box-btn-tags'>
-            <button onClick={handleAddTag}>add tag</button>
-            <div className='box-tags'>
-            
-            </div>
-          </div>
-        </div>
-
-        <div className='box-repositories'>
-          <p><span>ID:</span> 214568764</p>
-          <p><span>Name:</span> Lorem ipsum dolor sit amet consectetur adipisicing elit</p>
-          <p><span>Description:</span> Illum voluptate. Placeat necessitatibus dolores voluptates quia? Quo, maiores iure.</p>
-          <p><span>URL:</span> <a href='https://www.google.com.br' target='_blank'>https://www.google.com.br</a> </p>
-
-          <div className='box-btn-tags'>
-            <button onClick={handleAddTag}>add tag</button>
-            <div className='box-tags'>
-            
-            </div>
-          </div>
-        </div>
-
-        <div className='box-repositories'>
-          <p><span>ID:</span> 214568764</p>
-          <p><span>Name:</span> Lorem ipsum dolor sit amet consectetur adipisicing elit</p>
-          <p><span>Description:</span> Illum voluptate. Placeat necessitatibus dolores voluptates quia? Quo, maiores iure.</p>
-          <p><span>URL:</span> <a href='https://www.google.com.br' target='_blank'>https://www.google.com.br</a> </p>
-
-          <div className='box-btn-tags'>
-            <button onClick={handleAddTag}>add tag</button>
-            <div className='box-tags'>
-            
-            </div>
-          </div>
-        </div>
-     
-
-      {/* {console.log(starredRepositories)} */}
-      {/* {console.log(state.user.id)} */} 
     </Wrapper>
   )
 }
