@@ -16,7 +16,6 @@ export const Wrapper = styled.section`
       padding: 4px;
       border: 2px solid var(--color2);
       border-radius: 4px;
-
       outline: none;
     }
   }
@@ -131,7 +130,7 @@ export const Wrapper = styled.section`
     margin: 10% auto;
     padding: 15px 20px;
     background: #fff;
-}
+  }
 
   .close-modal {
     position: absolute;
@@ -144,5 +143,28 @@ export const Wrapper = styled.section`
     border: none;
     outline: none;
     cursor: pointer;
-}
+  }
+
+  .box-buttons-navigation {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .btn-prev,
+  .btn-next {
+    width: 60px;
+    background-color: var(--color2);
+    color: var(--color1);
+    padding: 6px 8px;
+    outline: none;
+    border: none;
+    border-radius: 4px;
+    margin: 10px 0 10px 4px;
+    cursor: pointer;
+  }
+
+  .btn-prev:disabled,
+  .btn-next:disabled {
+    background-color: #dddddd;
+  }
 `;
