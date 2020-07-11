@@ -8,8 +8,6 @@ import { Wrapper } from './styles'
 export default function Home() {
 
   const { state, dispatch } = useContext(AuthContext);
-  // const [ myRepositories, setMyRepositories ] = useState([])
-
   const history = useHistory();
 
   if (!state.isLoggedIn) {
@@ -65,12 +63,12 @@ export default function Home() {
 
             <div className="box-links">
               
-              <Link to='/repositories'>
-                My repositories
-              </Link>
-
               <Link to='/starred-repositories'>
                 Starred repositories
+              </Link>
+
+              <Link to='/filtered'>
+                Filtered repositories
               </Link>
               
             </div>      

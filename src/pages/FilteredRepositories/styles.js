@@ -4,6 +4,26 @@ export const Wrapper = styled.section`
   max-width: 1200px;
   position: relative;
 
+  .title-and-seach {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: end;
+
+    form {
+      margin-right: 0;
+    }
+
+    input {
+      height: 30px;
+      width: 300px;
+      margin-right: 0;
+      padding: 4px;
+      border: 2px solid var(--color2);
+      border-radius: 4px;
+      outline: none;
+    }
+  }
+
   .title {
     color: var(--color2);
     margin: 20px 20px 0 20px;

@@ -1,57 +1,38 @@
 import React, { useContext, useState, useEffect } from 'react';
+
+import { useHistory } from 'react-router-dom';
+
 import api from '../../services/api';
 import apiDB from '../../services/apiDB';
 
 import { AuthContext } from "../../App";
-import { Wrapper } from './styles';
 import Header from '../../components/Header';
+import { Wrapper } from './styles';
 
-const StarredRepositories = () => {
+const FilteredRepositories = () => {
 
+  const history = useHistory();
   const {state, dispatch} = useContext(AuthContext);
-  const [starredRepositories, setStarredRepositories] = useState([]);
   const [repositoryWithTags, setRepositoryWithTags] = useState([]);
-  const [page, setPage] = useState(1);
+  const [filteredRepositories, setFilteredRepositories] = useState([]);
+  const [inputFilter, setInputFilter] = useState([]);
 
   let currentID = '';
 
   useEffect(() => {
-    async function getInformationDB() {
-      const { data } = await apiDB.get(`/starred-repositories/${state.user.id}`)
-      
-      let result = data.map(item => [item.repo_id, item.tags, item.id])
-      setRepositoryWithTags(result)
-    }
+    const id = state.user.id;
+    if(inputFilter.length > 0) {
 
-    getInformationDB()
-  }, [state.user.id, repositoryWithTags])
-
-  useEffect(() => {
-    const user = state.user.login;
-    const btnPrev = document.querySelector('.btn-prev')
-    const btnNext = document.querySelector('.btn-next')
-
-    if(page === 1) {
-      btnPrev.disabled = true;
-    } else {
-      btnPrev.disabled = false;
-    }
-
-    async function loadRepositories() {
-      const response = await api.get(`users/${user}/starred?page=${page}&per_page=10`);
-      
-      if(response.data.length === 0) {
-        btnNext.disabled = true;
-      } else {
-        btnNext.disabled = false;
+      async function loadFilteredRepositories() {
+        const { data } = await apiDB.get(`starred-repositories/${inputFilter}/${id}/`);
+        setFilteredRepositories(data)
       }
 
-      const data = response.data
-      setStarredRepositories(data);
+      loadFilteredRepositories();
+      setInputFilter([])
     }
 
-    loadRepositories();
-  }, [page, state.user.login])
+  }, [filteredRepositories, inputFilter, state.user.id])
 
   async function handleAddTag(event) { 
     let user_id = String(state.user.id);
@@ -70,7 +51,7 @@ const StarredRepositories = () => {
         name,
         url
       }
-    
+      
       const response = await apiDB.post('/starred-repositories', data);
       let { id, repo_id: repo, tags: tagRepo } = response.data;
       
@@ -80,6 +61,8 @@ const StarredRepositories = () => {
         tagRepo
       }
 
+      const filter = document.querySelector('form input').value;
+      setInputFilter(filter);
       setRepositoryWithTags([...repositoryWithTags, newTags]);
     }
   }
@@ -119,6 +102,9 @@ const StarredRepositories = () => {
 
     if(response.status === 200) {
       handleCloseModal()
+      const filter = document.querySelector('form input').value;
+      setInputFilter(filter);
+      
     }
   }
 
@@ -160,75 +146,73 @@ const StarredRepositories = () => {
     modal.remove();
   }
 
-  function handlePrevPage() {
-    if(page !== 1) {
-      setPage(page - 1)
-    }
-  }
+  function handleFilter(event) {
+    event.preventDefault()
 
-  function handleNextPage() {  
-    setPage(page + 1)
+    const filter = document.querySelector('form input').value;
+    setInputFilter(filter);
+
+    if(filter) {
+      history.push('/filtered')
+    } else {
+      history.push('/starred-repositories')
+    }
+
+    setInputFilter(filter);
+    
   }
   
   return (
     <Wrapper className='wrapper'>
       <Header />
-     
-      <h2 className='title'>Starred Repositories</h2>
 
-      {starredRepositories.map(repository => (    
+      <div className='title-and-seach'>
+        <h2 className='title'>Filtered Repositories</h2>
+        
+        <form onSubmit={handleFilter}>    
+          <input 
+            type='text'
+            name='filter'
+            placeholder='Search tags'  
+          />
+        </form>    
+      </div>
+ 
+      {filteredRepositories.map(repository => (   
+    
         <div 
-          key={repository.id} 
+          key={repository.tags} 
           className='box-repositories' 
-          id={repository.id} 
+          id={repository.repo_id} 
           data-description={repository.description}
           data-name={repository.name}
-          data-url={repository.html_url}>
-          <p><span>ID:</span> {repository.id}</p>
+          data-url={repository.url}>
+          <p><span>ID:</span> {repository.repo_id}</p>
           <p><span>Name:</span> {repository.name}</p>
           <p><span>Description:</span> {repository.description}</p>
-          
-          <p><span>URL:</span>
-            <a 
-              href={repository.html_url} 
-              target='_blank' 
-              rel="noopener noreferrer"
-            >
-              {repository.html_url}
-            </a>
-          </p>
+          <p><span>URL:</span> <a href={repository.url} target='_blank'>{repository.url}</a> </p>
 
           <div className='box-btn-tags'>
             <button onClick={handleAddTag}>add tag</button>
             <div data-test={repository.id} className='box-tags'>
-         
-              {repositoryWithTags.map(item => (
-                 item[0] == repository.id     
-                 ? <span 
-                    key={item[2]} 
-                    data-id={item[2]}
-                    data-user_id={state.user.id}
-                    data-repo_id={repository.id}
-                    data-tags={item[1]}
-                    onClick={handleOpenModal}
-                    >
-                      {item[1]}
-                    </span> 
-                 : ' '
-              ))}
+                
+              <span 
+                key={repository.id} 
+                data-id={repository.id}
+                data-user_id={state.user.id}
+                data-repo_id={repository.id}
+                data-tags={repository.tags}
+                onClick={handleOpenModal}
+                >
+                  {repository.tags}
+              </span>  
 
             </div>
           </div>
         </div>
       ))}
-
-      <div className='box-buttons-navigation'>
-        <button className='btn-prev' onClick={handlePrevPage}>Prev</button>
-        <button className='btn-next' onClick={handleNextPage}>Next</button>
-      </div>
-      
     </Wrapper>
   )
 }
 
-export default StarredRepositories;
+export default FilteredRepositories;
