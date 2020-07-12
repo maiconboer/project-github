@@ -11,6 +11,7 @@ const Login = () => {
   const [data, setData] = useState({ errorMessage: "", isLoading: false });
 
   const { client_id, redirect_uri } = state;
+  console.log(redirect_uri);
 
   useEffect(() => {
     // After requesting Github access, Github redirects back to your app with a code parameter
