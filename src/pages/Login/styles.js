@@ -15,7 +15,7 @@ export const Wrapper = styled.section`
     align-items: center;
     box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.2);
     transition: 0.3s;
-    width: 25%;
+    width: 300px;
     height: 45%;
 
     img {
@@ -62,6 +62,9 @@ export const Wrapper = styled.section`
         display: flex;
         align-items: center;          
         height: 40px;
+        width: 100%;
+        background-color: var(--color3);
+        border:none;
 
         > span:nth-child(2) {
           margin-left: 5px;
