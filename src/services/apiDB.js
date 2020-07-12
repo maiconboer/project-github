@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const apiDB = axios.create({
-  baseURL: "http://localhost:4000"
+  baseURL: process.env.REACT_APP_API_DB
 })
 
 export default apiDB;
