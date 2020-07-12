@@ -27,6 +27,7 @@ function App() {
       <Switch>
         <Route path="/login" component={Login}/>
         <Route path="/" exact component={Home}/>
+        <Route path="/authenticate"/>
         
         <PrivateRoute path="/starred-repositories" component={StarredRepositories} />
         <PrivateRoute path="/filtered" component={FilteredRepositories} />
