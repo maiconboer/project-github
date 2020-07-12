@@ -27,7 +27,7 @@ const Login = () => {
         client_id: state.client_id,
         redirect_uri: state.redirect_uri,
         client_secret: state.client_secret,
-        code: newUrl[1]
+        code: newUrl[1],
       };
 
       const proxy_url = state.proxy_url;
