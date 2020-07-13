@@ -24,7 +24,7 @@ const StarredRepositories = () => {
     }
 
     getInformationDB()
-  }, [state.user.id])
+  }, [repositoryWithTags, state.user.id])
 
   useEffect(() => {
     const user = state.user.login;
