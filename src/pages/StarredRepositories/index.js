@@ -51,7 +51,8 @@ const StarredRepositories = () => {
     }
 
     loadRepositories();
-  }, [page, state.user.login])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [page])
 
   async function handleAddTag(event) { 
     let user_id = String(state.user.id);
