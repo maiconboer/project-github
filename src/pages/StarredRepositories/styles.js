@@ -6,7 +6,8 @@ export const Wrapper = styled.section`
 
   .title {
     color: var(--color2);
-    margin: 20px 20px 0 20px;
+    margin: 20px 20px 0 0px;
+    font-size: 16px; 
   }
 
   .box-repositories {

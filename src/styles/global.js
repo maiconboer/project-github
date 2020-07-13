@@ -18,6 +18,7 @@ export default createGlobalStyle`
     margin: 0;
     box-sizing: border-box;
     margin: 0 auto;
+    }
   }
 
   html,

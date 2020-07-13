@@ -9,13 +9,17 @@ export const Wrapper = styled.section`
     grid-template-columns: 1fr 1fr;
     align-items: end;
 
+    @media screen and(max-width: 768px) {
+      display: grid;
+    }
     form {
       margin-right: 0;
     }
 
     input {
       height: 30px;
-      width: 300px;
+      max-width: 280px;
+      width: 100%;
       margin-right: 0;
       padding: 4px;
       border: 2px solid var(--color2);
@@ -26,7 +30,8 @@ export const Wrapper = styled.section`
 
   .title {
     color: var(--color2);
-    margin: 20px 20px 0 20px;
+    margin: 20px 20px 0 0px;
+    font-size: 16px;  
   }
 
   .box-repositories {
@@ -99,6 +104,7 @@ export const Wrapper = styled.section`
 
     input { 
       padding: 4px;
+      width: 140px;
       outline: none;
     }
 
@@ -128,12 +134,16 @@ export const Wrapper = styled.section`
   }
 
   .modal-edit-delete > div {
-    width: 360px;
+    width: 300px;
     border-radius: 4px;
     position: relative;
     margin: 10% auto;
-    padding: 15px 20px;
+    padding: 15px 14px;
     background: #fff;
+
+    @media screen and(max-width: 768px) {
+      margin: 50% auto;
+    }
   }
 
   .close-modal {

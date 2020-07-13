@@ -204,7 +204,7 @@ const FilteredRepositories = () => {
           <p><span>ID:</span> {repository.repo_id}</p>
           <p><span>Name:</span> {repository.name}</p>
           <p><span>Description:</span> {repository.description}</p>
-          <p><span>URL:</span> <a href={repository.url} target='_blank'>{repository.url}</a> </p>
+          <p><span>Link:</span> <a href={repository.url} target='_blank' rel="noopener noreferrer">{repository.name}</a> </p>
 
           <div className='box-btn-tags'>
             <button onClick={handleAddTag}>add tag</button>
