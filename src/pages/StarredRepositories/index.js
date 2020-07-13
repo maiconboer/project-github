@@ -24,7 +24,8 @@ const StarredRepositories = () => {
     }
 
     getInformationDB()
-  }, [repositoryWithTags, state.user.id])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   useEffect(() => {
     const user = state.user.login;
@@ -51,8 +52,7 @@ const StarredRepositories = () => {
     }
 
     loadRepositories();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page])
+  }, [page, state.user.login])
 
   async function handleAddTag(event) { 
     let user_id = String(state.user.id);
