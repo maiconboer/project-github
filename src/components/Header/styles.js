@@ -30,32 +30,40 @@ export const Wrapper = styled.section`
 
     .content {
       display: grid;
-      grid-template-columns: repeat(5, 1fr);
+      grid-template-columns: repeat(3, 1fr);
       align-items: center;
+      gap: 20px;
       padding: 24px; 
       box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.2);
-     
+      
+      @media screen and (max-width: 768px) {
+        grid-template-columns: 1fr;
+      }
       .box-avatar {
         display: flex;
         flex-direction: column;
-
-        span {
-          margin-top: 16px;
-        }
       }
       
       img {
         height: 150px;
         width: 150px;
         border-radius: 50%;
+        margin-bottom: 8px;
       }
 
       .box-infomations {
         display: flex;
         flex-direction: column;
+        
+        a {
+          color: var(--color2);
+          text-decoration: none;
+          cursor: pointer;
+          transition: all 0.2s;
 
-        span {
-          margin-bottom: 4px;
+          &:hover {
+            filter: brightness(94%);
+          }
         }
       }
 

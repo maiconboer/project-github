@@ -21,97 +21,112 @@ const FilteredRepositories = () => {
 
   useEffect(() => {
     const id = state.user.id;
-
     if(inputFilter.length > 0) {
+
       async function loadFilteredRepositories() {
         const { data } = await apiDB.get(`starred-repositories/${inputFilter}/${id}/`);
-        setFilteredRepositories(data);
+        setFilteredRepositories(data)
       }
 
       loadFilteredRepositories();
-      setInputFilter([]);
+      setInputFilter([])
     }
 
   }, [filteredRepositories, inputFilter, state.user.id])
 
   async function handleAddTag(event) { 
-    let user_id = String(state.user.id);
-    let repo_id = event.target.parentNode.parentNode.id;
-    let description = event.target.parentNode.parentNode.dataset.description;
-    let name = event.target.parentNode.parentNode.dataset.name;
-    let url = event.target.parentNode.parentNode.dataset.url;
-    let tags = prompt(`insert tag name`);
-    
-    if(tags) {
-      let data = {
-        user_id,
-        repo_id,
-        tags,
-        description,
-        name,
-        url
-      }
-      
-      const response = await apiDB.post('/starred-repositories', data);
-      let { id, repo_id: repo, tags: tagRepo } = response.data;
-      
-      const newTags = {
-        id,
-        repo,
-        tagRepo
+    try {
+      let user_id = String(state.user.id);
+      let repo_id = event.target.parentNode.parentNode.id;
+      let description = event.target.parentNode.parentNode.dataset.description;
+      let name = event.target.parentNode.parentNode.dataset.name;
+      let url = event.target.parentNode.parentNode.dataset.url;
+      let tags = prompt(`insert tag name`);
+
+      if(tags) {
+        tags = tags.toUpperCase();
+        let data = {
+          user_id,
+          repo_id,
+          tags,
+          description,
+          name,
+          url
+        }
+        
+        const response = await apiDB.post('/starred-repositories', data);
+        let { id, repo_id: repo, tags: tagRepo } = response.data;
+        
+        const newTags = {
+          id,
+          repo,
+          tagRepo
       }
 
       const filter = document.querySelector('form input').value;
       setInputFilter(filter);
       setRepositoryWithTags([...repositoryWithTags, newTags]);
     }
+    } catch (error) {
+      alert('this tag already exists!')
+    }
+    
+    
   }
 
   async function handleEditTag() {
-    let tags = document.querySelector('.modal-edit-delete input').value;
+    try {
+      let tags = document.querySelector('.modal-edit-delete input').value
+      tags = tags.toUpperCase();
 
-    if(!tags) {
-      alert('Enter a tag name');
-      return
+      if(!tags) {
+        alert('Enter a tag name')
+        return
+      }
+      let data = {
+        id: currentID,
+        tags
+      }
+      
+      const response = await apiDB.put(`/starred-repositories`, data )
+      let { id, repo_id: repo, tags: tagRepo } = response.data
+
+      const newTags = {
+        id,
+        repo,
+        tagRepo
+      }
+
+      if(response.status === 200) {
+        handleCloseModal()
+      }
+
+      setRepositoryWithTags([...repositoryWithTags, newTags])
+    } catch (error) {
+      alert('this tag already exists!')
     }
-    let data = {
-      id: currentID,
-      tags
-    }
+
     
-    const response = await apiDB.put(`/starred-repositories`, data );
-    let { id, repo_id: repo, tags: tagRepo } = response.data;
-
-    const newTags = {
-      id,
-      repo,
-      tagRepo
-    }
-
-    if(response.status === 200) {
-      handleCloseModal();
-    }
-
-    setRepositoryWithTags([...repositoryWithTags, newTags])
   }
 
   async function handleRemoveTag() {
 
     let id = currentID 
-    const response = await apiDB.delete(`/starred-repositories/${id}`);
+    const response = await apiDB.delete(`/starred-repositories/${id}`)
 
     if(response.status === 200) {
       handleCloseModal()
       const filter = document.querySelector('form input').value;
       setInputFilter(filter);
+      
     }
   }
 
   function handleOpenModal(event) {
 
-    currentID = event.target.dataset.id;
+    currentID = event.target.dataset.id
 
-    let wrapper = document.querySelector('.wrapper');
+    let wrapper = document.querySelector('.wrapper')
     let divModal = document.createElement('div');
     let div = document.createElement('div');
     let input = document.createElement('input');
@@ -132,32 +147,33 @@ const FilteredRepositories = () => {
     btnExit.classList = 'close-modal'
     btnExit.onclick = () => handleCloseModal();
 
-    div.appendChild(input);
-    div.appendChild(btnEdit);
-    div.appendChild(btnDelete);
-    div.appendChild(btnExit);
-    divModal.appendChild(div);
-    wrapper.appendChild(divModal);
+    div.appendChild(input)
+    div.appendChild(btnEdit)
+    div.appendChild(btnDelete)
+    div.appendChild(btnExit)
+    divModal.appendChild(div)
+    wrapper.appendChild(divModal)
   }
 
   function handleCloseModal() {
-    let modal = document.querySelector('.modal-edit-delete');
+    let modal = document.querySelector('.modal-edit-delete')
     modal.remove();
   }
 
   function handleFilter(event) {
-    event.preventDefault();
+    event.preventDefault()
 
     const filter = document.querySelector('form input').value;
     setInputFilter(filter);
 
     if(filter) {
-      history.push('/filtered');
+      history.push('/filtered')
     } else {
-      history.push('/starred-repositories');
+      history.push('/starred-repositories')
     }
 
     setInputFilter(filter);
+    
   }
   
   return (
@@ -176,7 +192,7 @@ const FilteredRepositories = () => {
         </form>    
       </div>
  
-      {filteredRepositories.map(repository => (   
+      { filteredRepositories.length > 0 ? filteredRepositories.map(repository => (   
     
         <div 
           key={repository.tags} 
@@ -208,7 +224,9 @@ const FilteredRepositories = () => {
             </div>
           </div>
         </div>
-      ))}
+      ))
+    
+    : <div className='box-repositories'>No repository found!</div>}
     </Wrapper>
   )
 }

@@ -18,7 +18,9 @@ export default function Home() {
     avatar_url, 
     name, 
     bio,
-    public_repos, 
+    public_repos,
+    total_private_repos,
+    html_url,
     followers, 
     following, 
     } = state.user
@@ -52,14 +54,20 @@ export default function Home() {
             </div>
 
             <div className="box-infomations">
-              <span>{public_repos} Repositories</span>
-              <span>{followers} Followers</span>
-              <span>{following} Following</span>
+              
+              <p>{followers} Followers</p>
+              <p>{following} Following</p>
+              <p>{total_private_repos} Private Repos</p>
+              <p>{public_repos} Public Repos</p>
+              <a 
+                href={html_url} 
+                target='_blank'
+                rel="noopener noreferrer"
+                >Github account
+                </a>
     
             </div>
 
-            <div>dados</div>
-            <div>dados</div>
 
             <div className="box-links">
               

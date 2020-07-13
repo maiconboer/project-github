@@ -25,8 +25,8 @@ const StarredRepositories = () => {
     }
 
     getInformationDB();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [updateRepositories])
+
+  }, [state.user.id, updateRepositories])
 
   useEffect(() => {
     const user = state.user.login;
@@ -40,7 +40,7 @@ const StarredRepositories = () => {
     }
 
     async function loadRepositories() {
-      const response = await api.get(`users/${user}/starred?page=${page}&per_page=10`);
+      const response = await api.get(`users/${user}/starred?page=${page}&per_page=20`);
       
       if(response.data.length === 0) {
         btnNext.disabled = true;
@@ -56,64 +56,77 @@ const StarredRepositories = () => {
   }, [page, state.user.login])
 
   async function handleAddTag(event) { 
-    let user_id = String(state.user.id);
-    let repo_id = event.target.parentNode.parentNode.id;
-    let description = event.target.parentNode.parentNode.dataset.description;
-    let name = event.target.parentNode.parentNode.dataset.name;
-    let url = event.target.parentNode.parentNode.dataset.url;
-    let tags = prompt(`insert tag name`);
     
-    if(tags) {
-      let data = {
-        user_id,
-        repo_id,
-        tags,
-        description,
-        name,
-        url
-      }
-    
-      const response = await apiDB.post('/starred-repositories', data);
-      let { id, repo_id: repo, tags: tagRepo } = response.data;
+    try {
+      let user_id = String(state.user.id);
+      let repo_id = event.target.parentNode.parentNode.id;
+      let description = event.target.parentNode.parentNode.dataset.description;
+      let name = event.target.parentNode.parentNode.dataset.name;
+      let url = event.target.parentNode.parentNode.dataset.url;
+      let tags = prompt(`insert tag name`);
+
+      if(tags) {
+        tags = tags.toUpperCase();
+        let data = {
+          user_id,
+          repo_id,
+          tags,
+          description,
+          name,
+          url
+        }
       
+        const response = await apiDB.post('/starred-repositories', data);
+        let { id, repo_id: repo, tags: tagRepo } = response.data;
+        
+        const newTags = {
+          id,
+          repo,
+          tagRepo
+        }
+
+        setRepositoryWithTags([...repositoryWithTags, newTags]);
+        setUpdateRepositories([...repositoryWithTags, newTags]);
+    }
+    } catch (error) {
+      alert('this tag already exists!')
+    }
+    
+    
+  }
+
+  async function handleEditTag() {
+    try {
+      let tags = document.querySelector('.modal-edit-delete input').value;
+      tags = tags.toUpperCase();
+
+      if(!tags) {
+        alert('Enter a tag name');
+        return
+      }
+      let data = {
+        id: currentID,
+        tags
+      }
+      
+      const response = await apiDB.put(`/starred-repositories`, data );
+      let { id, repo_id: repo, tags: tagRepo } = response.data;
+  
       const newTags = {
         id,
         repo,
         tagRepo
       }
-
+  
+      if(response.status === 200) {
+        handleCloseModal();
+      }
+  
       setRepositoryWithTags([...repositoryWithTags, newTags]);
       setUpdateRepositories([...repositoryWithTags, newTags]);
+    } catch (error) {
+      alert('this tag already exists!')
     }
-  }
-
-  async function handleEditTag() {
-    let tags = document.querySelector('.modal-edit-delete input').value;
-
-    if(!tags) {
-      alert('Enter a tag name');
-      return
-    }
-    let data = {
-      id: currentID,
-      tags
-    }
-    
-    const response = await apiDB.put(`/starred-repositories`, data );
-    let { id, repo_id: repo, tags: tagRepo } = response.data;
-
-    const newTags = {
-      id,
-      repo,
-      tagRepo
-    }
-
-    if(response.status === 200) {
-      handleCloseModal();
-    }
-
-    setRepositoryWithTags([...repositoryWithTags, newTags]);
-    setUpdateRepositories([...repositoryWithTags, newTags]);
   }
 
   async function handleRemoveTag() {
