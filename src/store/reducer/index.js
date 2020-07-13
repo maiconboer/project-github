@@ -8,8 +8,8 @@ export const initialState = {
 export const reducer = (state, action) => {
   switch (action.type) {
     case "LOGIN": {
-      localStorage.setItem("isLoggedIn", JSON.stringify(action.payload.isLoggedIn))
-      localStorage.setItem("user", JSON.stringify(action.payload.user))
+      localStorage.setItem("isLoggedIn", JSON.stringify(action.payload.isLoggedIn));
+      localStorage.setItem("user", JSON.stringify(action.payload.user));
       return {
         ...state,
         isLoggedIn: action.payload.isLoggedIn,
@@ -17,7 +17,7 @@ export const reducer = (state, action) => {
       };
     }
     case "LOGOUT": {
-      localStorage.clear()
+      localStorage.clear();
       return {
         ...state,
         isLoggedIn: false,

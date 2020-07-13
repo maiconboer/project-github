@@ -10,6 +10,7 @@ const StarredRepositories = () => {
 
   const {state, dispatch} = useContext(AuthContext);
   const [starredRepositories, setStarredRepositories] = useState([]);
+  const [updateRepositories, setUpdateRepositories] = useState([]);
   const [repositoryWithTags, setRepositoryWithTags] = useState([]);
   const [page, setPage] = useState(1);
 
@@ -17,20 +18,20 @@ const StarredRepositories = () => {
 
   useEffect(() => {
     async function getInformationDB() {
-      const { data } = await apiDB.get(`/starred-repositories/${state.user.id}`)
+      const { data } = await apiDB.get(`/starred-repositories/${state.user.id}`);
       
-      let result = data.map(item => [item.repo_id, item.tags, item.id])
-      setRepositoryWithTags(result)
+      let result = data.map(item => [item.repo_id, item.tags, item.id]);
+      setRepositoryWithTags(result);
     }
 
-    getInformationDB()
+    getInformationDB();
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [updateRepositories])
 
   useEffect(() => {
     const user = state.user.login;
-    const btnPrev = document.querySelector('.btn-prev')
-    const btnNext = document.querySelector('.btn-next')
+    const btnPrev = document.querySelector('.btn-prev');
+    const btnNext = document.querySelector('.btn-next');
 
     if(page === 1) {
       btnPrev.disabled = true;
@@ -82,14 +83,15 @@ const StarredRepositories = () => {
       }
 
       setRepositoryWithTags([...repositoryWithTags, newTags]);
+      setUpdateRepositories([...repositoryWithTags, newTags]);
     }
   }
 
   async function handleEditTag() {
-    let tags = document.querySelector('.modal-edit-delete input').value
+    let tags = document.querySelector('.modal-edit-delete input').value;
 
     if(!tags) {
-      alert('Enter a tag name')
+      alert('Enter a tag name');
       return
     }
     let data = {
@@ -97,8 +99,8 @@ const StarredRepositories = () => {
       tags
     }
     
-    const response = await apiDB.put(`/starred-repositories`, data )
-    let { id, repo_id: repo, tags: tagRepo } = response.data
+    const response = await apiDB.put(`/starred-repositories`, data );
+    let { id, repo_id: repo, tags: tagRepo } = response.data;
 
     const newTags = {
       id,
@@ -107,27 +109,30 @@ const StarredRepositories = () => {
     }
 
     if(response.status === 200) {
-      handleCloseModal()
+      handleCloseModal();
     }
 
-    setRepositoryWithTags([...repositoryWithTags, newTags])
+    setRepositoryWithTags([...repositoryWithTags, newTags]);
+    setUpdateRepositories([...repositoryWithTags, newTags]);
   }
 
   async function handleRemoveTag() {
 
-    let id = currentID 
-    const response = await apiDB.delete(`/starred-repositories/${id}`)
+    let id = currentID;
+    const response = await apiDB.delete(`/starred-repositories/${id}`);
 
     if(response.status === 200) {
-      handleCloseModal()
+      handleCloseModal();
+      setRepositoryWithTags([...repositoryWithTags]);
+      setUpdateRepositories([...repositoryWithTags]);
     }
   }
 
   function handleOpenModal(event) {
 
-    currentID = event.target.dataset.id
+    currentID = event.target.dataset.id;
 
-    let wrapper = document.querySelector('.wrapper')
+    let wrapper = document.querySelector('.wrapper');
     let divModal = document.createElement('div');
     let div = document.createElement('div');
     let input = document.createElement('input');
@@ -145,30 +150,30 @@ const StarredRepositories = () => {
     btnDelete.onclick = () => handleRemoveTag();
 
     btnExit.innerHTML = 'x';
-    btnExit.classList = 'close-modal'
+    btnExit.classList = 'close-modal';
     btnExit.onclick = () => handleCloseModal();
 
-    div.appendChild(input)
-    div.appendChild(btnEdit)
-    div.appendChild(btnDelete)
-    div.appendChild(btnExit)
-    divModal.appendChild(div)
-    wrapper.appendChild(divModal)
+    div.appendChild(input);
+    div.appendChild(btnEdit);
+    div.appendChild(btnDelete);
+    div.appendChild(btnExit);
+    divModal.appendChild(div);
+    wrapper.appendChild(divModal);
   }
 
   function handleCloseModal() {
-    let modal = document.querySelector('.modal-edit-delete')
+    let modal = document.querySelector('.modal-edit-delete');
     modal.remove();
   }
 
   function handlePrevPage() {
     if(page !== 1) {
-      setPage(page - 1)
+      setPage(page - 1);
     }
   }
 
   function handleNextPage() {  
-    setPage(page + 1)
+    setPage(page + 1);
   }
   
   return (

@@ -4,10 +4,10 @@ export const isAuthenticated = () => {
   let user = JSON.parse(localStorage.getItem('user')); 
   
   if (isLoggedIn && user.id && user.login) {
-    return true
+    return true;
 
   } else {
-    return false
+    return false;
   }
 
 }

@@ -3,11 +3,11 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 
 import Login from "./pages/Login";
 import Home from "./pages/Home";
-import StarredRepositories from "./pages/StarredRepositories"
-import FilteredRepositories from "./pages/FilteredRepositories"
+import StarredRepositories from "./pages/StarredRepositories";
+import FilteredRepositories from "./pages/FilteredRepositories";
 
 import { initialState, reducer } from "./store/reducer";
-import { PrivateRoute } from './routes/PrivateRoute'
+import { PrivateRoute } from './routes/PrivateRoute';
 
 import GlobalStyle from './styles/global';
 

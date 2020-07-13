@@ -2,8 +2,8 @@ import React, { useContext } from "react";
 import { Redirect, Link, useHistory } from "react-router-dom";
 import { AuthContext } from "../../App";
 
-import { FiLogOut, FiArrowLeft } from 'react-icons/fi'
-import { Wrapper } from './styles'
+import { FiLogOut, FiArrowLeft } from 'react-icons/fi';
+import { Wrapper } from './styles';
 
 export default function Home() {
 
@@ -30,7 +30,7 @@ export default function Home() {
   } 
 
   const handleBackHome = () => {
-    history.push('/')
+    history.push('/');
   } 
 
   return (

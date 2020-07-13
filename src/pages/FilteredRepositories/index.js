@@ -21,15 +21,15 @@ const FilteredRepositories = () => {
 
   useEffect(() => {
     const id = state.user.id;
-    if(inputFilter.length > 0) {
 
+    if(inputFilter.length > 0) {
       async function loadFilteredRepositories() {
         const { data } = await apiDB.get(`starred-repositories/${inputFilter}/${id}/`);
-        setFilteredRepositories(data)
+        setFilteredRepositories(data);
       }
 
       loadFilteredRepositories();
-      setInputFilter([])
+      setInputFilter([]);
     }
 
   }, [filteredRepositories, inputFilter, state.user.id])
@@ -68,10 +68,10 @@ const FilteredRepositories = () => {
   }
 
   async function handleEditTag() {
-    let tags = document.querySelector('.modal-edit-delete input').value
+    let tags = document.querySelector('.modal-edit-delete input').value;
 
     if(!tags) {
-      alert('Enter a tag name')
+      alert('Enter a tag name');
       return
     }
     let data = {
@@ -79,8 +79,8 @@ const FilteredRepositories = () => {
       tags
     }
     
-    const response = await apiDB.put(`/starred-repositories`, data )
-    let { id, repo_id: repo, tags: tagRepo } = response.data
+    const response = await apiDB.put(`/starred-repositories`, data );
+    let { id, repo_id: repo, tags: tagRepo } = response.data;
 
     const newTags = {
       id,
@@ -89,7 +89,7 @@ const FilteredRepositories = () => {
     }
 
     if(response.status === 200) {
-      handleCloseModal()
+      handleCloseModal();
     }
 
     setRepositoryWithTags([...repositoryWithTags, newTags])
@@ -98,21 +98,20 @@ const FilteredRepositories = () => {
   async function handleRemoveTag() {
 
     let id = currentID 
-    const response = await apiDB.delete(`/starred-repositories/${id}`)
+    const response = await apiDB.delete(`/starred-repositories/${id}`);
 
     if(response.status === 200) {
       handleCloseModal()
       const filter = document.querySelector('form input').value;
       setInputFilter(filter);
-      
     }
   }
 
   function handleOpenModal(event) {
 
-    currentID = event.target.dataset.id
+    currentID = event.target.dataset.id;
 
-    let wrapper = document.querySelector('.wrapper')
+    let wrapper = document.querySelector('.wrapper');
     let divModal = document.createElement('div');
     let div = document.createElement('div');
     let input = document.createElement('input');
@@ -133,33 +132,32 @@ const FilteredRepositories = () => {
     btnExit.classList = 'close-modal'
     btnExit.onclick = () => handleCloseModal();
 
-    div.appendChild(input)
-    div.appendChild(btnEdit)
-    div.appendChild(btnDelete)
-    div.appendChild(btnExit)
-    divModal.appendChild(div)
-    wrapper.appendChild(divModal)
+    div.appendChild(input);
+    div.appendChild(btnEdit);
+    div.appendChild(btnDelete);
+    div.appendChild(btnExit);
+    divModal.appendChild(div);
+    wrapper.appendChild(divModal);
   }
 
   function handleCloseModal() {
-    let modal = document.querySelector('.modal-edit-delete')
+    let modal = document.querySelector('.modal-edit-delete');
     modal.remove();
   }
 
   function handleFilter(event) {
-    event.preventDefault()
+    event.preventDefault();
 
     const filter = document.querySelector('form input').value;
     setInputFilter(filter);
 
     if(filter) {
-      history.push('/filtered')
+      history.push('/filtered');
     } else {
-      history.push('/starred-repositories')
+      history.push('/starred-repositories');
     }
 
     setInputFilter(filter);
-    
   }
   
   return (

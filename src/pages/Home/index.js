@@ -1,9 +1,9 @@
 import React, { useContext } from "react";
 
-import Header from '../../components/Header'
+import Header from '../../components/Header';
 import { AuthContext } from "../../App";
 
-import { Wrapper } from './styles'
+import { Wrapper } from './styles';
 
 const Home = () => {
 
