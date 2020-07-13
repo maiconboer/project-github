@@ -79,6 +79,7 @@ export const Wrapper = styled.section`
 
     input { 
       padding: 4px;
+      width: 140px;
       outline: none;
     }
 
@@ -108,12 +109,16 @@ export const Wrapper = styled.section`
   }
 
   .modal-edit-delete > div {
-    width: 360px;
+    width: 300px;
     border-radius: 4px;
     position: relative;
     margin: 10% auto;
-    padding: 15px 20px;
+    padding: 15px 14px;
     background: #fff;
+
+    @media screen and(max-width: 768px) {
+      margin: 50% auto;
+    }
   }
 
   .close-modal {

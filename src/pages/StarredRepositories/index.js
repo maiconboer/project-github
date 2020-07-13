@@ -207,13 +207,13 @@ const StarredRepositories = () => {
           <p><span>Name:</span> {repository.name}</p>
           <p><span>Description:</span> {repository.description}</p>
           
-          <p><span>URL:</span>
+          <p><span>Link: </span>
             <a 
               href={repository.html_url} 
               target='_blank' 
               rel="noopener noreferrer"
             >
-              {repository.html_url}
+              {repository.name}
             </a>
           </p>
 
