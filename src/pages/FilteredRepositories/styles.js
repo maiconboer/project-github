@@ -8,6 +8,7 @@ export const Wrapper = styled.section`
     display: grid;
     grid-template-columns: 1fr 1fr;
     align-items: end;
+    margin-top: 8px;
 
     @media screen and(max-width: 768px) {
       display: grid;

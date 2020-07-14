@@ -40,8 +40,13 @@ export default function Home() {
       <div className="container">
 
         <div className='box-btns-back-logout'>
-          <FiArrowLeft onClick={handleBackHome} title='Home'/>
-          <FiLogOut onClick={handleLogout} title='Logout'/>
+          {history.location.pathname === '/' 
+          ? 
+            <div></div>
+          : 
+            <FiArrowLeft onClick={handleBackHome} title='Home'/>
+          }
+            <FiLogOut onClick={handleLogout} title='Logout'/>
         </div>
         
         <div>
