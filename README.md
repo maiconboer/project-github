@@ -1,5 +1,25 @@
 # project-github
 
+
+<p align=center>  
+<img src=".github/image0.PNG" width="400"/>
+</p>
+
+<p align=center>  
+<img src=".github/image1.PNG" width="400"/>
+<img src=".github/image4.PNG" width="400"/>
+</p>
+
+<p align=center>  
+<img src=".github/image2.PNG" width="400"/>
+<img src=".github/image3.PNG" width="400"/>
+</p>
+
+<p align=center>  
+<img src=".github/image5.PNG" width="400"/>
+</p>
+
+
 ## Passos para executar este projeto:
 
 **1º - clonar e configurar o backend conforme instruções presentes no repositório de backend:**    
@@ -29,7 +49,11 @@ Faça login com github
 
 Na **Dashboard**, em **Domains & URLs whitelist**, adicione:  
 
-**localhost** (conforme imagem)  
+**localhost** (conforme imagem)
+
+<p align=center>  
+<img src=".github/oauth-dashboard.png" width="400"/>
+</p>
 
 Salve as informações de App keys.  
 
@@ -41,6 +65,10 @@ Em **Keys and Permission Scope**, preencha com:
 **client_id:** (aquele que gerou dentro do Github, o OAuth Apps)
 **client_secret:** (aquela que gerou dentro do Github, o OAuth Apps)
 **scope:** **user**
+
+<p align=center>  
+<img src=".github/oauth-api.png" width="400"/>
+</p>
 
 -----------------------------------------
 
@@ -58,6 +86,11 @@ Na raiz do projeto cliente uma variável de ambiente:
               REACT_APP_API_DB=http://localhost:4000
               REACT_APP_OAUTH_IO=sua_public_key_oauth_io
               
+              
+ <p align=center>  
+<img src=".github/env.PNG" width="400"/>
+</p>
+              
    
  Para instalar as dependências, rode:
 
@@ -73,5 +106,38 @@ Após instalar as dependências, pode startar seu backend e também o frontend, 
 
 
 ## Deploy realizado, do Front-end e Back-end:
-
 https://project-github.herokuapp.com
+
+
+-----------------------------------------
+
+**O que podemos fazer na aplicação?**
+
+Fazer autenticação e autorização de usuário;
+Buscar todos os repositórios em que o usuário fornecido adicionou estrela;
+Gerenciar tags de repositórios listados (por exemplo, adicionar, editar, excluir);
+Filtrar repositórios por tags.
+
+
+**HISTÓRIAS DE USUÁRIO**  
+
+**Autenticação de usuário**  
+Como usuário, quero me cadastrar e fazer login no sistema. Desejo que minhas tags e repositórios sejam vistos apenas por mim mesmo.
+
+    Utilizando "login com o GitHub" para a autenticação.
+
+**Buscar repositórios**  
+Como usuário, desejo fornecer meu nome de usuário para recuperar todos os repositórios, para que eu possa adicionar, editar ou excluir minhas tags posteriormente.
+
+    Usando a API do GitHub, obtenha repositórios com estrela. As informações que devem ser recuperadas são: id do repositório, nome do repositório, descrição e url HTTP.
+
+**Adicionar tags aos repositórios**  
+Como usuário, desejo poder adicionar tags a cada repositório para poder pesquisá-las posteriormente por tag.
+
+    Um repositório não pode ter tags duplicadas.
+
+**Pesquisar repositórios por tags**  
+
+    Como usuário, desejo poder fornecer uma tag para listar os repositórios que têm essa tag associada.
+
+A pesquisa deve funcionar para consultas com seqüências de caracteres ao meio (por exemplo, digitando doc, os repositórios com tag "docker" e "documentação" devem ser retornados).
