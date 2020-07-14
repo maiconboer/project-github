@@ -42,7 +42,7 @@ const StarredRepositories = () => {
     async function loadRepositories() {
       const response = await api.get(`users/${user}/starred?page=${page}&per_page=20`);
       
-      if(response.data.length === 0) {
+      if(response.data.length < 20) {
         btnNext.disabled = true;
       } else {
         btnNext.disabled = false;
@@ -244,8 +244,7 @@ const StarredRepositories = () => {
       <div className='box-buttons-navigation'>
         <button className='btn-prev' onClick={handlePrevPage}>Prev</button>
         <button className='btn-next' onClick={handleNextPage}>Next</button>
-      </div>
-      
+      </div> 
     </Wrapper>
   )
 }
