@@ -13,9 +13,9 @@ https://github.com/maiconboer/project-github-backend
 
 Clique na sua foto no canto direito do github e vá em **Settings > Developer settings > Oauth Apps > New Oauth App**
 
-Application name: project-github  
-Homepage URL: https://oauth.io  
-Authorization callback URL: https://oauth.io/auth  
+Application name: ```project-github``` 
+Homepage URL: ```https://oauth.io```
+Authorization callback URL: ```https://oauth.io/auth```  
 
 Será gerado então o **client_id** e **client_secret** (vamos utilizá-los)    
 
